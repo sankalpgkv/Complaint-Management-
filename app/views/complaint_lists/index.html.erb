@@ -1,6 +1,5 @@
 <p id="notice"><%= notice %></p>
 
-<% if !current_user.admin %>
 <h1>Complaint Lists</h1>
 <table>
   <thead>
@@ -8,6 +7,9 @@
       <th>Title</th>
       <th>Description</th>
       <th>Status</th>
+      <% if has_role?(:admin) %>
+        <td>User</td>
+      <% end %>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -17,9 +19,15 @@
       <tr>
         <td><%= complaint_list.title %></td>
         <td><%= complaint_list.description %></td>
+        <td><%= complaint_list.status %></td>
+        <% if has_role?(:admin) %>
+          <td><%= (User.find(complaint_list.user_id)).email.split('@')[0] %></td>
+        <% end %>
         <td><%= link_to 'Show', complaint_list %></td>
         <td><%= link_to 'Edit', edit_complaint_list_path(complaint_list) %></td>
-        <td><%= link_to 'Destroy', complaint_list, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if !has_role?(:admin) %>
+          <td><%= link_to 'Close', complaint_list, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -27,34 +35,36 @@
 
 <br>
 
-<%= link_to 'New Complaint List', new_complaint_list_path %>
-
-<% else %>
-  <h1>Users</h1>
-  <table>
-    <thead>
-    <tr>
-      <th>id</th>
-      <th>Username</th>
-      <th>Processing Complaints</th>
-      <th>Pending Complaints</th>
-      <th colspan="3"></th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <% @users.each do |user| %>
-      <tr>
-        <td><%= user.id %></td>
-        <td><%= link_to user.email.split('@')[0] %></td>
-        <td><%= link_to 'Show', complaint_list %></td>
-        <td><%= link_to 'Edit', edit_complaint_list_path(complaint_list) %></td>
-        <td><%= link_to 'Destroy', complaint_list, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-
-  <br>
-
+<% if !current_user.has_role?(:admin) %>
+  <%= link_to 'New Complaint List', new_complaint_list_path %>
 <% end %>
+
+
+<%# else %>
+<!--  <h1>Users</h1>-->
+<!--  <table>-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--      <th>id</th>-->
+<!--      <th>Username</th>-->
+<!--      <th>Processing Complaints</th>-->
+<!--      <th>Pending Complaints</th>-->
+<!--      <th colspan="3"></th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+
+<!--    <tbody>-->
+    <%# @users.each do |user| %>
+<!--      <tr>-->
+<!--        <td><%#= user.id %></td>-->
+<!--        <td><%#= link_to user.email.split('@')[0] %></td>-->
+<!--        <td><%#= link_to 'Show', complaint_list %></td>-->
+<!--        <td><%#= link_to 'Edit', edit_complaint_list_path(complaint_list) %></td>-->
+<!--        <td><%#= link_to 'Destroy', complaint_list, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+<!--      </tr>-->
+    <%# end %>
+<!--    </tbody>-->
+<!--  </table>-->
+
+<!--  <br>-->
+

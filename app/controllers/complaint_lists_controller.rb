@@ -5,7 +5,11 @@ class ComplaintListsController < ApplicationController
   # GET /complaint_lists
   # GET /complaint_lists.json
   def index
-    @complaint_lists = ComplaintList.where(:user_id => current_user.id)
+    if !current_user.has_role?(:admin)
+      @complaint_lists = ComplaintList.where(:user_id => current_user.id)
+    else
+      @complaint_lists = ComplaintList.all
+    end
   end
 
   # GET /complaint_lists/1
