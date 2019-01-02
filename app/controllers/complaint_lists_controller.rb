@@ -75,6 +75,6 @@ class ComplaintListsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def complaint_list_params
-    params.require(:complaint_list).permit(:title, :description)
+    params.require(:complaint_list).permit(:title, :description, :status)
   end
 end

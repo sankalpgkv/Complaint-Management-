@@ -1,5 +1,5 @@
 class ComplaintList < ApplicationRecord
-    after_initialize :default_values
+    before_save :default_values
 
     private
     def default_values

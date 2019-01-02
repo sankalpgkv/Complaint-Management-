@@ -21,7 +21,7 @@
         <td><%= complaint_list.description %></td>
         <td><%= complaint_list.status %></td>
         <% if has_role?(:admin) %>
-          <td><%= (User.find(complaint_list.user_id)).email.split('@')[0] %></td>
+          <td><%= (User.find(complaint_list.user_id)).email.split('@')[0] rescue ActiveRecord::RecordNotFound%></td>
         <% end %>
         <td><%= link_to 'Show', complaint_list %></td>
         <td><%= link_to 'Edit', edit_complaint_list_path(complaint_list) %></td>
